@@ -30,6 +30,15 @@ var test_urls = []struct {
   {"http://very-valid.example", false, ""},
 }
 
+var test_comments = []struct {
+  Comment string 
+  ShouldFail bool 
+  Error string 
+} {
+  {"I am a valid comment", false, ""},
+  {"I'm an invalid comment", true, "Invalid Comment Format"},
+}
+
 func TestNewBookmark(t *testing.T) {
   var tmpbm *Bookmark 
   var err error
@@ -82,4 +91,24 @@ func TestIsValidUrl(t *testing.T) {
   }
 }
 
+func TestIsValidCommet(t *testing.T) {
+  var err error 
 
+  for _, c := range test_comments {
+    err = IsValidComment(c.Comment)
+
+    if err == nil && c.ShouldFail {
+      t.Log(c.Comment)
+      t.Fatal("This test should have failed")
+    }
+
+    if err != nil && c.ShouldFail {
+      if err.Error() != c.Error {
+        t.Log(c.Comment)
+        t.Fatal("Incorrect error message received: %s", c.Error)
+      }
+
+      t.Skip()
+    }
+  }
+}

@@ -27,10 +27,30 @@ func IsValidUrl(url string) (err error) {
   return nil
 }
 
+func IsValidComment(comment string) (err error) {
+  match, err := regexp.MatchString(`^[a-zA-Z0-9 ]+$`, comment)
+
+  if err != nil {
+    return err 
+  }
+
+  if ! match {
+    return errors.New("Invalid Comment Format")
+  }
+
+  return nil 
+}
+
 func NewBookmark(url, comment string) (b *Bookmark, err error) {
   var tmpbm *Bookmark 
 
   err = IsValidUrl(url)
+
+  if err != nil {
+    return nil, err 
+  }
+
+  err = IsValidComment(comment)
 
   if err != nil {
     return nil, err 
