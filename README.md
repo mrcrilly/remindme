@@ -24,4 +24,4 @@ I intend on adding a feature which allows people to share their lists in a read-
 Maybe a simple "thumbs up" feature so people can show approval of a particular URL in a shared list?
 
 ## Encryption
-Maybe add encryption into the mix
+Maybe add encryption into the mix, allowing one to keep a more secure database on their servers. Could be useful, but given the links are public in the first place, might be a waste of time and resources.
