@@ -36,7 +36,22 @@ func buildAndRunGet(handler func(http.ResponseWriter, *http.Request)) (data []by
 }
 
 func buildAndRunPost(handler func(http.ResponseWriter, *http.Request), topost interface{}) (data []byte, err error) {
-  return nil, nil 
+  var testsrv *httptest.Server
+  var httprsp *http.Response
+  var httpdata []byte
+
+  testsrv = httptest.NewServer(http.HandlerFunc(handler))
+
+  httprsp, err = http.Get(testsrv.URL)
+  checkError(err)
+
+  httpdata, err  = ioutil.ReadAll(httprsp.Body)
+  checkError(err)
+
+  httprsp.Body.Close()
+  testsrv.Close()
+
+  return httpdata, err
 }
 
 func TestGetHandler(t *testing.T) {
@@ -75,7 +90,7 @@ func TestPostHandler(t *testing.T) {
   var httpdata []byte 
   var rsptype reflect.Type
 
-  httpdata, err = buildAndRunGet(PostHandler)
+  httpdata, err = buildAndRunPost(PostHandler)
   checkErrorT(err, t)
 
   err = json.Unmarshal(httpdata, &postrsp)
@@ -97,7 +112,7 @@ func TestDeleteHandler(t *testing.T) {
   var httpdata []byte 
   var rsptype reflect.Type
 
-  httpdata, err = buildAndRunGet(DeleteHandler)
+  httpdata, err = buildAndRunDelete(DeleteHandler)
   checkErrorT(err, t)
 
   err = json.Unmarshal(httpdata, &deletersp)

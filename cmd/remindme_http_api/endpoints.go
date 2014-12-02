@@ -28,9 +28,7 @@ func GetHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostHandler(w http.ResponseWriter, r *http.Request) {
-  // var err error 
-
-  // var postrsp PostResponse
+  
 }
 
 func DeleteHandler(w http.ResponseWriter, r *http.Request) {
